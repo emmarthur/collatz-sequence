@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Collatz Sequence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&family=JetBrains+Mono:wght@500&family=Outfit:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/style.css" />
+  </head>
+  <body>
+    <div class="bg-grid" aria-hidden="true"></div>
+
+    <main class="page">
+      <header class="hero">
+        <p class="kicker">3n + 1</p>
+        <h1>Collatz Sequence</h1>
+        <p class="tagline">
+          Pick a starting whole number from <strong>{{ min_start }}</strong> to
+          <strong>{{ max_start }}</strong>. Even terms halve;
+          odd terms become 3n + 1 — repeat until you reach 1.
+        </p>
+        <button type="button" class="help-jump-btn" data-help-jump>Help</button>
+      </header>
+
+      <section class="card">
+        <form id="start-form" class="start-form">
+          <label for="start-input">Starting number</label>
+          <input
+            id="start-input"
+            name="start"
+            type="number"
+            min="{{ min_start }}"
+            max="{{ max_start }}"
+            value="27"
+            inputmode="numeric"
+            required
+          />
+          <button type="submit" class="btn btn-primary">Generate</button>
+        </form>
+        <p id="error-text" class="error" role="alert" hidden></p>
+      </section>
+
+      <section id="results" class="card results" hidden>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">Steps to 1</span>
+            <span id="stat-steps" class="stat-value">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Peak value</span>
+            <span id="stat-peak" class="stat-value">—</span>
+          </div>
+          <div class="stat">
+            <span class="stat-label">Peak at step</span>
+            <span id="stat-peak-step" class="stat-value">—</span>
+          </div>
+        </div>
+
+        <div class="chart-wrap">
+          <canvas id="chart" width="640" height="220" aria-label="Sequence height by step"></canvas>
+        </div>
+
+        <div class="playback">
+          <button type="button" class="btn btn-ghost" id="btn-play">Play</button>
+          <button type="button" class="btn btn-ghost" id="btn-step">Step</button>
+          <button type="button" class="btn btn-ghost" id="btn-reset-play">Reset</button>
+          <label class="speed">
+            Speed
+            <input id="speed" type="range" min="1" max="100" value="65" />
+          </label>
+        </div>
+
+        <p id="current-step" class="current-step" aria-live="polite"></p>
+        <p id="sequence-line" class="sequence-line"></p>
+      </section>
+
+      <section class="card help" aria-labelledby="help-heading">
+        <h2 id="help-heading">Help</h2>
+        <h3>Rules</h3>
+        <ul>
+          <li>If n is <strong>even</strong>, the next value is n ÷ 2.</li>
+          <li>If n is <strong>odd</strong>, the next value is 3n + 1.</li>
+          <li>Stop when n is 1.</li>
+        </ul>
+        <p>
+          No one has proved that every positive starting number eventually reaches 1, but every
+          number tried so far does. The chart shows how high the values climb before they fall.
+        </p>
+        <h3>Controls</h3>
+        <ul>
+          <li><strong>Generate</strong> builds the full sequence for your starting number.</li>
+          <li><strong>Play</strong> walks through the list; <strong>Step</strong> advances one value.</li>
+        </ul>
+      </section>
+    </main>
+
+    <script>
+      window.COLLATZ_MAX_START = {{ max_start }};
+    </script>
+    <script src="/static/app.js"></script>
+  </body>
+</html>
